@@ -30,6 +30,10 @@ public:
     bool mIsEmpty() const;
     // full or not
     bool mIsFull() const;
+    // length 
+    size_t mLength() const;
+    // curent size
+    size_t mSize() const;
     
     // Insert an element with T type;
     CMaxHeap<T>& mInsert(const T& ele);
@@ -37,8 +41,6 @@ public:
     CMaxHeap<T>& mDeleteMax(T& ele);
     // max
     T mMax() const;
-    // Extract the max elem, and delete the elem
-    T mExtract();
     ~CMaxHeap();
 private:
     void _mMakeHeap();

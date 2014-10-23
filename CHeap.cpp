@@ -16,7 +16,7 @@
  * =====================================================================================
  */
 
-#include "CMaxHeap.h"
+#include "CHeap.h"
 #include <assert.h>
 // memory full exception
 class MemoryFullExp;
@@ -57,6 +57,12 @@ template<typename T>
 size_t _mParent(const size_t& i) const {
     assert(i > 0);
     return (i - 1) / 2;
+}
+
+template<typename T>
+T CMaxHeap<T>::mMax() const {
+    assert(_m_nLength > 0);
+    return _m_pData[0];
 }
 
 template<typename T>
@@ -101,11 +107,21 @@ bool CMaxHeap<T>::mIsFull() const {
 }
 
 template<typename T>
+size_t CMaxHeap<T>::mLength() const {
+    return _m_nLength;
+}
+
+template<typename T>
+size_t CMaxHeap<T>::mSize() const{
+    return _m_nSize;
+}
+
+template<typename T>
 CMaxHeap<T>& CMaxHeap<T>::mInsert(const T& ele) {
     // insert an element to the heap
     // boundary check
-    if(_m_nLength == _m_nSize)
-        throw(MemoryFullExp);
+    assert(_m_nLength < _m_nSize)
+
     size_t empty_pos = _m_nLength - 1;
 
     // find a place to insert the node
@@ -121,5 +137,43 @@ CMaxHeap<T>& CMaxHeap<T>::mInsert(const T& ele) {
 }
 
 template<typename T>
-CMaxHeap<T>& CMaxHeap<T>::mDeleteMax(T& ele)
+CMaxHeap<T>& CMaxHeap<T>::mDeleteMax(T& ele) {
+    // not empty
+    assert(_m_nLength > 0);
+    ele = _m_pData[0];
+    
+    // put the end to front
+    T value = _m_pData[0] = _m_pData[_m_nLength - 1];
+    // delete the max;
+    _m_nLength --;
 
+    // because sub trees are max heap, only find a pos to place the first data;
+    size_t empty_pos = ele;
+    size_t left = _mLeft(empty_pos);
+    // find a place
+    while(left < _m_nLength) {
+        right = left + 1;
+        int max = left;
+        if((right < _m_nLength) && (_m_pData[left] < _m_pData[right]))
+            // right is bigger;
+            max ++;
+        if(value > _m_pData[max])
+            break;
+        
+        // move the max element up
+        _m_pData[max] = _m_pData[_mParent(max)];
+        empty_pos = max;
+        left = _mLeft(max);
+    }
+    _m_pData[empty_pos] = value;
+
+    return *this;
+}
+
+template<typename T>
+CMaxHeap<T>::~CMaxHeap() {
+    if(_m_pData != NULL) {
+        delete [] _m_pData;
+        _m_pData = NULL;
+    }
+}
