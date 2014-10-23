@@ -39,6 +39,7 @@ public:
     T mMax() const;
     // Extract the max elem, and delete the elem
     T mExtract();
+    ~CHeap();
 private:
     void _mMakeHeap();
     // return the index of left node in tree formed heap

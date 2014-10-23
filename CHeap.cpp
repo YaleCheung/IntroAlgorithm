@@ -18,6 +18,9 @@
 
 #include "CHeap.h"
 #include <assert.h>
+// memory full exception
+class MemoryFullExp;
+
 // constructor
 template<typename T>
 CHeap<T>::CHeap(size_t size = 100) :
@@ -29,7 +32,7 @@ CHeap<T>::CHeap(size_t size = 100) :
 template<typename T>
 CHeap<T>::CHeap(T* data, int array_size, int heap_size) :
     _m_nLength(array_size), _m_nSize(heap_size) {
-    assert((_m_nLength >= 0) && (_m_nSize >= _m_nLength));
+    assert((data != NULL) && (_m_nLength >= 0) && (_m_nSize >= _m_nLength));
     _m_pData = new T[_m_nSize];
     // data copy;
     for(auto i = 0; i < _m_nSize, i ++)
@@ -60,9 +63,9 @@ template<typename T>
 void CHeap<T>::_mMakeHeap() {
     for(auto i = _m_nLength / 2 - 1; i >= 0; i --) {
         // i becomes an empty node
-        int value = _m_pData[i];
-        int left = _mLeft(i);
-        int empty_pos = i;
+        T value = _m_pData[i];
+        size_t left = _mLeft(i);
+        size_t empty_pos = i;
 
         // make the sub tree to a heap
         while(left < _m_nLength) {
@@ -94,7 +97,19 @@ template<typename T>
 bool CHeap<T>::mIsFull() const {
     return (_m_nLength == _m_nSize) ? true : false;
 }
+
 template<typename T>
 CHeap<T>& CHeap<T>::mInsert(const T& ele) {
-    
+    // insert an element to the heap
+    // boundary check
+    if(_m_nLength == _m_nSize)
+        throw(MemoryFullExp);
+    size_t empty_pos = _m_nLength - 1;
+
+    // find a place to insert the node
+    size_t parent = _mParent(empty_pos);
+    while((parent > 0) && 
+    _m_nLength ++;
+
+
 }
