@@ -1,7 +1,7 @@
 /*
  * =====================================================================================
  *
- *       Filename:  CHeap.h
+ *       Filename:  CMaxHeap.h
  *
  *    Description:  The cpp implement of Heap
  *
@@ -22,24 +22,24 @@
 #define CHEAP_HHH
 
 template<typename T>
-class CHeap {
+class CMaxHeap {
 public:
-    CHeap(int size);
-    CHeap(T* data, int array_size, int heap_size);
+    CMaxHeap(int size);
+    CMaxHeap(T* data, int array_size, int heap_size);
     // empty or not
     bool mIsEmpty() const;
     // full or not
     bool mIsFull() const;
     
     // Insert an element with T type;
-    CHeap<T>& mInsert(const T& ele);
+    CMaxHeap<T>& mInsert(const T& ele);
     // Delete an element;
-    CHeap<T>& mDelete(const T& ele);
+    CMaxHeap<T>& mDeleteMax(T& ele);
     // max
     T mMax() const;
     // Extract the max elem, and delete the elem
     T mExtract();
-    ~CHeap();
+    ~CMaxHeap();
 private:
     void _mMakeHeap();
     // return the index of left node in tree formed heap
@@ -47,8 +47,8 @@ private:
     // return the index of right node in tree formed heap
     inline size_t _mRight(const size_t& i) const;
     inline size_t _mParent(const size_t& i) const;
-    CHeap(const CHeap<T>&) = delete;
-    Cheap<T>& operator=(const CHeap<T>&) = delete;
+    CMaxHeap(const CMaxHeap<T>&) = delete;
+    CMaxHeap<T>& operator=(const CMaxHeap<T>&) = delete;
     T* _m_pData;
     size_t _m_nSize;
     size_t _m_nLength;
