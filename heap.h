@@ -225,4 +225,4 @@ void MaxHeap<T>::Print() {
    for(auto i = 0; i < length_; i ++)
        std::cout <<  p_data_[i] << std::endl;
 }
-#endif
+#endif //MaxHeap
