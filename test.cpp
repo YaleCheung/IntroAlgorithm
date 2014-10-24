@@ -18,7 +18,7 @@
 #include "CHeap.h"
 
 int main(int argc, char* argv[]) {
-    CMaxHeap<int> heap();
+    CMaxHeap<int> heap(100);
     return 0;
 }
 
