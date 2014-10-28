@@ -16,18 +16,16 @@
  * =====================================================================================
  */
 
-#include "stack.h"
+#include "linkedstack.h"
 #include <iostream>
 using std::endl;
 using std::cout;
 int main(int argc, char* argv[]) {
     // init test
-    Stack<int> stack;
-
-    for(auto i = 0; i < 10; i ++)
-        stack.Push(i);
-    cout << stack.Size();
-    for(auto i = 0; i < 10; i ++)
-       cout << "delete " << stack.Pop() << endl;
+    Stack<int> ss;
+    for(int i = 0; i < 10; i ++) {
+        ss.Push(i);
+        cout << ss.Length() << endl;
+    }
     return 0;
 }

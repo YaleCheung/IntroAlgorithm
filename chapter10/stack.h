@@ -36,7 +36,7 @@ public:
     void Init(T data[], const int& length, const int& size);
     void Push(const T& data);
     T Pop();
-
+   
 private:
     void Init_(const int& size);
     int length_;
