@@ -37,23 +37,29 @@ public:
         pNode p = new Node;
         p->pNext = NULL; 
         p->data = data;
+        // link is empty;
         // add a node into *head 
-        pNode p_next = (*p_head_) -> pNext;
-        p -> pNext = p_next;
+        p -> pNext = *p_head_;
         *p_head_ = p;
         length_ ++;
     }
+
     T Pop() {
         assert(length_ > 0);
         T val = (*p_head_) -> data;
+        pNode tmp = *p_head_;
         *p_head_ = (*p_head_) -> pNext;
+        length_ --;
+        delete tmp;
+        return val;
     }
     
     ~Stack() {
         if(NULL != (*p_head_)) {
-            pNode tmp = *p_head_;
-            while(tmp != NULL) {
-                pNode next = tmp -> pNext;
+            pNode p = *p_head_;
+            while(p != NULL) {
+                pNode tmp = p;
+                p = p -> pNext;
                 delete tmp;
             }
         }
@@ -63,7 +69,7 @@ private:
     // only be called by Stack();
     void Init_() {
         p_head_ = new pNode;
-        *p_head_ = NULL;
+        *p_head_ = (pNode)NULL;
     }
     // node definition;
     typedef struct Node {

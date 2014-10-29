@@ -27,5 +27,8 @@ int main(int argc, char* argv[]) {
         ss.Push(i);
         cout << ss.Length() << endl;
     }
+    cout << "push over" << endl;
+    for(int i = 0; i < 11; i ++)
+        cout << ss.Pop() << endl;
     return 0;
 }
