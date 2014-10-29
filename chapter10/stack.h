@@ -26,7 +26,7 @@ public:
     Stack() : p_data_(NULL), length_(0), size_(0) {Init_(100);};
     ~Stack() {if(NULL != p_data_) delete [] p_data_;}
     Stack(const Stack<T>&) = delete;
-    void operator=(const Stack<T>&) = delete;
+    Stack operator=(const Stack<T>&) = delete;
     
     int Length() const;
     int Size() const;
