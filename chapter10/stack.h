@@ -23,10 +23,10 @@
 template<typename T>
 class Stack {
 public:
-    Stack() : p_data_(NULL), length_(0), size_(0) {Init_(100);};
+    Stack(const int& size = 100) : p_data_(NULL), length_(0), size_(size) {Init_(size);};
     ~Stack() {if(NULL != p_data_) delete [] p_data_;}
     Stack(const Stack<T>&) = delete;
-    Stack operator=(const Stack<T>&) = delete;
+    Stack& operator=(const Stack<T>&) = delete;
     
     int Length() const;
     int Size() const;
@@ -66,7 +66,7 @@ void Stack<T>::SetSize(const int& size) {
 
 template<typename T>
 void Stack<T>::Init_(const int& size) {
-    if(NULL == p_data_)
+    if(NULL != p_data_)
         delete [] p_data_;
     length_ = 0;
     size_ = size;

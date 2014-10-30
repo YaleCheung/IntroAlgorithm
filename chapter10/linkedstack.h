@@ -27,7 +27,7 @@ public:
     Stack() : length_(0), p_head_(NULL) {Init_();};
     // forbid copy;
     Stack(const Stack<T>&) = delete;
-    Stack operator=(const Stack<T>&) = delete;
+    Stack& operator=(const Stack<T>&) = delete;
     // push
     int Length() {
         return length_;
