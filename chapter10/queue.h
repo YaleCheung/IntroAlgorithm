@@ -43,7 +43,7 @@ private:
 
 template<typename T>
 Queue<T>::Queue(const int size):
-    first_(0), last_(0), size_(size), p_data_(NULL) {
+    first_(0), tail_(0), size_(size), p_data_(NULL) {
     Init_(size);
 }
 
@@ -56,18 +56,19 @@ void Queue<T>::Init_(const int& size) {
 
 template<typename T>
 Queue<T>& Queue<T>::EnQueue(const T& val) {
-    if(last_ < first_)
-        assert(last_ == (first_ - 1));
-    else
-        assert(last_ < (size - 1));
-    p_data[last_ ++] = val;
+    if((tail_ == (size_ - 1)) && first_ > 0) {
+        p_data_[tail_] = val;
+        tail_ = 0;
+    } else if(tail_ < first_ || 
+            ((tail_ < size_) && tail_ > first_))
+        p_data_[tail_ ++] = val;
     return *this;
 }
 
 template<typename T>
 T Queue<T>::DeQueue() {
-    if(last_ < first_)
-        return p_data_[first_ ++];
-
+    if((first_ < size_) && (first_ < size_) {
+        
+    }
 }
 #endif
