@@ -23,6 +23,7 @@ template<typename T>
 class Queue {
 public:
     Queue();
+    ~Queue();
     Queue(const Queue&) = delete;
     Queue& operator=(const Queue&) = delete;
     Queue& EnQueue(const Queue);

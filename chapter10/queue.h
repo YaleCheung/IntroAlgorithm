@@ -28,6 +28,7 @@ public:
     Queue(const int& size = 10);
     Queue(const Queue&) = delete;
     Queue& operator=(const Queue&) = delete;
+    ~Queue();
     // put a data into queue
     Queue& EnQueue(const T& val);
     // del a data in the queue
@@ -96,4 +97,10 @@ void Queue<T>::Print() {
         order ++;
     }
 }
+
+template<typename T>
+Queue<T>::~Queue() {
+    delete [] p_data_;
+}
+
 #endif
