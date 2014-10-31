@@ -25,14 +25,56 @@ public:
     Queue();
     Queue(const Queue&) = delete;
     Queue& operator=(const Queue&) = delete;
-    Queue& EnQueue(const Queue)
+    Queue& EnQueue(const Queue);
+    T DeQueue();
 private:
-    void init_();
+    void Init_();
     typedef struct Node {
         T data;
 	Node* p_next;
-    } Node, *pNode;
+    } Node;
 
-    pNode* p_head_;
+    Node* p_head_;
+    Node* p_tail_
 };
 #endif
+
+template<typename T>
+Queue<T>::Queue() {
+    p_tail_ = p_head_ = NULL;
+    init_();
+}
+
+template<typename T>
+void Queue<T>::Init_() {
+    p_head_ = new Node;
+    p_head_->p_next = NULL;
+    p_tail_ = p_head_;
+}
+
+template<typename T>
+Queue<T>& Queue<T>::EnQueue(const T& val) {
+    Node p = new Node;
+    p->data = val;    
+    p->p_next = NULL;
+    p_tail_->p_next = p;
+    p_tail_ = p;
+}
+
+template<typename T>
+T Queue<T>::DeQueue() {
+    assert(p_tail_ != NULL);    
+    T val = p_head_->p_next->data;
+    Node* tmp = p_head_->p_next;
+    p_head_->p_next = tmp->p_next;
+    delete tmp;
+}
+
+template<typename T>
+Queue<T>::~Queue() {
+    while(p_head_) {
+        Node* tmp = p_head_;
+        p_head_ = p_head_->p_next;
+        delete tmp;
+    }
+}
