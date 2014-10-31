@@ -65,7 +65,7 @@ void Stack<T>::SetSize(const int& size) {
 }    
 
 template<typename T>
-void Stack<T>::Init_(const int& size) {
+void Stack<T>::Init_() {
     if(NULL != p_data_)
         delete [] p_data_;
     length_ = 0;

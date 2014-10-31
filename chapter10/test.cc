@@ -16,19 +16,21 @@
  * =====================================================================================
  */
 
-#include "linkedstack.h"
+#include "queue.h"
 #include <iostream>
 using std::endl;
 using std::cout;
 int main(int argc, char* argv[]) {
     // init test
-    Stack<int> ss;
-    for(int i = 0; i < 10; i ++) {
-        ss.Push(i);
-        cout << ss.Length() << endl;
+    Queue<int> test;
+    // test EnQueue;
+    for(auto i = 0; i < 9; i ++) {
+        test.EnQueue(i);   
     }
-    cout << "push over" << endl;
-    for(int i = 0; i < 11; i ++)
-        cout << ss.Pop() << endl;
+    test.Print();
+    for(auto i = 10; i < 5; i++) {
+        cout << test.DeQueue() << endl;
+    }
+    test.Print();
     return 0;
 }
