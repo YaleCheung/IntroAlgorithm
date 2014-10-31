@@ -56,19 +56,19 @@ void Queue<T>::Init_(const int& size) {
 
 template<typename T>
 Queue<T>& Queue<T>::EnQueue(const T& val) {
-    if((tail_ == (size_ - 1)) && first_ > 0) {
-        p_data_[tail_] = val;
-        tail_ = 0;
-    } else if(tail_ < first_ || 
-            ((tail_ < size_) && tail_ > first_))
-        p_data_[tail_ ++] = val;
+    if(tail_ > first_) {
+        if(tail_ < size_ - 1)
+            p_data_[tail_ ++] = val;
+        else if((tail_ == size_ - 1) && (first_ > 0)) {
+            p_data_[tail_] = val;
+            tail_ = 0;
+        }
+    else if(tail_ < first_)
+        p_data[tail_ ++] = val;
     return *this;
-}
-
+} 
 template<typename T>
 T Queue<T>::DeQueue() {
-    if((first_ < size_) && (first_ < size_) {
-        
-    }
+    if()
 }
 #endif
