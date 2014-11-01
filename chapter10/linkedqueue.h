@@ -19,6 +19,8 @@
 #ifndef LINKEDQUEUE_H
 #define LINKEDQUEUE_H
 
+#define NULL 0
+#include <assert.h>
 template<typename T>
 class Queue {
 public:
@@ -26,24 +28,23 @@ public:
     ~Queue();
     Queue(const Queue&) = delete;
     Queue& operator=(const Queue&) = delete;
-    Queue& EnQueue(const Queue);
+    Queue& EnQueue(const T& val);
     T DeQueue();
 private:
-    void Init_();
     typedef struct Node {
         T data;
 	Node* p_next;
-    } Node;
+    } Node, *pNode;
 
-    Node* p_head_;
-    Node* p_tail_
+    void Init_();
+    pNode p_head_;
+    pNode p_tail_;
 };
-#endif
 
 template<typename T>
 Queue<T>::Queue() {
     p_tail_ = p_head_ = NULL;
-    init_();
+    Init_();
 }
 
 template<typename T>
@@ -55,7 +56,7 @@ void Queue<T>::Init_() {
 
 template<typename T>
 Queue<T>& Queue<T>::EnQueue(const T& val) {
-    Node p = new Node;
+    Node* p = new Node;
     p->data = val;    
     p->p_next = NULL;
     p_tail_->p_next = p;
@@ -64,9 +65,9 @@ Queue<T>& Queue<T>::EnQueue(const T& val) {
 
 template<typename T>
 T Queue<T>::DeQueue() {
-    assert(p_tail_ != NULL);    
+    assert(p_head_->p_next != NULL);
     T val = p_head_->p_next->data;
-    Node* tmp = p_head_->p_next;
+    pNode tmp = p_head_->p_next;
     p_head_->p_next = tmp->p_next;
     delete tmp;
 }
@@ -74,8 +75,10 @@ T Queue<T>::DeQueue() {
 template<typename T>
 Queue<T>::~Queue() {
     while(p_head_) {
-        Node* tmp = p_head_;
+        pNode tmp = p_head_;
         p_head_ = p_head_->p_next;
         delete tmp;
     }
 }
+
+#endif
