@@ -19,7 +19,14 @@
 #ifndef LINKEDQUEUE_H
 #define LINKEDQUEUE_H
 
-#define NULL 0
+#define DEBUG_
+#ifdef DEBUG_ 
+#include <iostream>
+using std::cout;
+using std::endl;
+#endif
+
+//#define NULL 0
 #include <assert.h>
 template<typename T>
 class Queue {
@@ -30,6 +37,8 @@ public:
     Queue& operator=(const Queue&) = delete;
     Queue& EnQueue(const T& val);
     T DeQueue();
+
+    void Print();
 private:
     typedef struct Node {
         T data;
@@ -70,6 +79,7 @@ T Queue<T>::DeQueue() {
     pNode tmp = p_head_->p_next;
     p_head_->p_next = tmp->p_next;
     delete tmp;
+    return val;
 }
 
 template<typename T>
@@ -81,4 +91,13 @@ Queue<T>::~Queue() {
     }
 }
 
+template<typename T>
+void Queue<T>::Print() {
+    Node* p = p_head_->p_next;
+    assert(p != NULL);
+    while(p) {
+        cout << p -> data << endl;
+        p = p->p_next;
+    }
+}
 #endif
