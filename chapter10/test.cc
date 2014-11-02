@@ -23,6 +23,16 @@ using std::cout;
 int main(int argc, char* argv[]) {
     // test constructor;
     Link<int> test;
-    cout << test.Length() << endl;
+    // for insert
+    for(int i = 0; i < 10; i ++) {
+        test.Insert(i, i);
+    }
+    test.Print();
+    cout << "length" << test.Length() << endl;
+    int p = 0;
+    for(int i = 10; i > 0 ; i ++) {
+        test.Delete(i, &p);
+        cout << p << endl;
+    }
     return 0;
 }

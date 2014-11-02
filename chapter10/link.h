@@ -18,6 +18,12 @@
 
 #ifndef LINK_H
 #define LINK_H
+
+#define INT_DEBUG_
+#ifdef INT_DEBUG_
+#include <stdio.h>
+#endif
+
 #include <assert.h>
 //#define NULL 0
 template<typename T>
@@ -30,10 +36,13 @@ public:
     Link& operator-(const Link&) = delete;
     
     Link& Insert(const T& val, const int& i);
-    Link& Delete(T* value, const int& k);
+    Link& Delete(const int& k, T* value);
     bool Find(const T& val);
     //int search(const T& val);
     int Length() const;
+#ifdef INT_DEBUG_
+    void Print() const;
+#endif
 private:
     void Init_();
     typedef struct Node {
@@ -60,11 +69,11 @@ template<typename T>
 Link<T>& Link<T>::Insert(const T& val, const int& k) {
     // insert a val after kth val;
     // the first pos is 0;
-    assert(k <= length_ && k > 0);
-    int i = 0;
+    assert(k <= length_ && k >= 0);
+    int i = 1;
     pNode p = p_head_;
     pNode pp = NULL;
-    while(i < k) {
+    while(i <= k) {
         p = p->p_next;
         i += 1;
     }
@@ -77,7 +86,7 @@ Link<T>& Link<T>::Insert(const T& val, const int& k) {
     p_insert->p_next = NULL;
     pp->p_next = p_insert;
     p_insert->p_next = p;
-    length_ ++;
+    length_ += 1;
     return *this;
 }
 
@@ -94,18 +103,17 @@ bool Link<T>::Find(const T& val) {
 }
 
 template<typename T>
-Link<T>& Link<T>::Delete(T* val, const int& k) {
+Link<T>& Link<T>::Delete(const int& k, T* val) {
     assert(k <= length_);
     pNode p = p_head_;
     pNode pp = p;
     // find the pp
-    for(int i = 0; i < k; i ++) {
+    for(int i = 0; i <= k; i ++) 
         p = p->p_next;
-        i ++;
-    }
     pp = p;
     // delete
     p = p->p_next;
+    *val = p->data;
     pp->p_next = p->p_next;
     length_ --;
     return *this;
@@ -118,11 +126,22 @@ int Link<T>::Length() const {
 
 template<typename T>
 Link<T>::~Link() {
-    pNode p;
+    pNode p = p_head_;
     while(p) {
         pNode p_tmp = p;
         p = p->p_next;
         delete p_tmp;
     }
 }
+
+#ifdef INT_DEBUG_
+template<typename T>
+void Link<T>::Print() const {
+    pNode p = p_head_->p_next;
+    while(p) {
+        printf("%d\n", p->data);
+        p = p->p_next;
+    }
+}
+#endif
 #endif // LINK_H
