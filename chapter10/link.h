@@ -18,6 +18,8 @@
 
 #ifndef LINK_H
 #define LINK_H
+#include <assert.h>
+//#define NULL 0
 template<typename T>
 class Link {
 public:
@@ -33,6 +35,7 @@ public:
     //int search(const T& val);
     int Length() const;
 private:
+    void Init_();
     typedef struct Node {
         T data;
 	Node* p_next;
@@ -48,13 +51,13 @@ Link<T>::Link() :
 }
 
 template<typename T>
-Link<T>::Init_() {
+void Link<T>::Init_() {
     p_head_ = new Node;
     p_head_->p_next = NULL;
 }
 
 template<typename T>
-Link<T>::Insert(const T& val, const int& k) {
+Link<T>& Link<T>::Insert(const T& val, const int& k) {
     // insert a val after kth val;
     // the first pos is 0;
     assert(k <= length_ && k > 0);
@@ -96,7 +99,7 @@ Link<T>& Link<T>::Delete(T* val, const int& k) {
     pNode p = p_head_;
     pNode pp = p;
     // find the pp
-    while(int i = 0; i < k; i ++) {
+    for(int i = 0; i < k; i ++) {
         p = p->p_next;
         i ++;
     }
@@ -104,13 +107,22 @@ Link<T>& Link<T>::Delete(T* val, const int& k) {
     // delete
     p = p->p_next;
     pp->p_next = p->p_next;
-    length --;
+    length_ --;
     return *this;
 }
 
 template<typename T>
-int Length() const {
+int Link<T>::Length() const {
     return length_;
 }
 
+template<typename T>
+Link<T>::~Link() {
+    pNode p;
+    while(p) {
+        pNode p_tmp = p;
+        p = p->p_next;
+        delete p_tmp;
+    }
+}
 #endif // LINK_H
