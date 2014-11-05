@@ -17,8 +17,16 @@
  */
 #include "direct_address_array.h"
 #include <stdio.h>
+#include <iostream>
+using namespace std;
 int main(int argc, cha* argv[]) {
-    Array();
+    
+    Array a = Array();
+    for(int i = 0; i < 100; i ++)
+        a.Add(i, i);
+    for(int i = 0; i < 100; i ++) {
+        cout << a.Delete(i) << endl;
+    }
     return 0;
 }
 
