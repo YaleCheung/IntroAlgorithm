@@ -10,11 +10,12 @@ Record the process of my reading "Introduction to Algorithms", codes in cpp and 
    * Code for practice, for understanding the idea. Cannot be used for library
    * Answers will make out later
 2. 
-3.
-4.
-5.
+3. 
+4. 
+5. 
 6. Heap struct
 7. Sorting
 8. 
-9.
-10.Linear Struct
+9. 
+10. Linear Struct
+11. Hash Table
