@@ -67,7 +67,7 @@ void Array<T>::Add(const int& index, const T& val) {
 	array_ = new_array;
 	size_ *= 2;
     }
-    array_[index] = val;
+    array_[index - 1] = val;
 }
 
 template<typename T>
@@ -76,7 +76,7 @@ T Array<T>::Delete(const int& index) {
     // copy the data after index;
     T val = array_[index - 1];
     for(int i = index; i < size_; i ++)
-        array_[i] = array_[i + 1];
+        array_[i - 1] = array_[i];
     return val;
 }
 
@@ -97,7 +97,8 @@ T Array<T>::Search(const int& index) {
 
 template<typename T>
 T& Array<T>::operator[](const int& index) {
-    return array_[index];
+    assert(index > 0 && index <= size_);
+    return array_[index - 1];
 }
 
 template<typename T>
