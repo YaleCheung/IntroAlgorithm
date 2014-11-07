@@ -91,7 +91,7 @@ Link<T>& Link<T>::Insert(const T& val, const int& k) {
 }
 
 template<typename T>
-int Link<T>::Search(const T& val) {
+int Link<T>::Search(const T& val) const {
     assert(length_ > 1);
     int pos = 0;
     pNode p = p_head_->p_next;
@@ -102,6 +102,7 @@ int Link<T>::Search(const T& val) {
         p = p->p_next;
     }
     return -1;
+}
 
 template<typename T>
 bool Link<T>::Find(const T& val) {

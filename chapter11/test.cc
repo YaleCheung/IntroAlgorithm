@@ -15,18 +15,14 @@
  *
  * =====================================================================================
  */
-#include "direct_address_array.h"
 #include <stdio.h>
 #include <iostream>
+
+#include "linked_hash.h"
 using namespace std;
 int main(int argc, char* argv[]) {
     
-    Array<int> a;
-    for(int i = 1; i < 100; i ++)
-        a[i] = i;
-    for(int i = 1; i < 100;) {
-        cout << a.Delete(i) << endl;
-    }
+    LinkHash<int> hash;
     return 0;
 }
 

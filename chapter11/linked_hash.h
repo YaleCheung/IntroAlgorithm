@@ -17,7 +17,7 @@
  */
 #ifndef LINKED_HASH_H
 #define LINKED_HASH_H
-#include "link.h"
+#include "../chapter10/link.h"
 #include "hash.h"
 #include "../lib/nocopyable.h"
 
@@ -25,11 +25,11 @@ template<typename T>
 class LinkHash : public Hash<T>, public NoCopyable<T> {
 public:
     // 
-    LinkHash();
-    Hash& Insert(const T&);
-    Hash& Delete(const T&);
+    LinkHash(const int& size = 100);
+    LinkHash& Insert(const T&);
+    LinkHash& Delete(const T&);
     virtual int Hash_Func(const T&) const;
-    bool Find() const;
+    bool Find(const T& val) const;
     
 private:
     void Init_();
@@ -37,25 +37,25 @@ private:
 };
 
 template<typename T>
-LinkHash<T>::LinkHash(const int& size = 100) :
+LinkHash<T>::LinkHash(const int& size) :
     size_(size), array_(NULL) {
     Init_();
 }
 
 template<typename T>
-LinkHash<T>::Init_() {
+void LinkHash<T>::Init_() {
     array_ = new Link<T>[size_];
 }
 
 template<typename T>
-LinkHash<T>& Insert(const T& val) {
+LinkHash<T>& LinkHash<T>::Insert(const T& val) {
     int pos = Hash_Func(val);
     assert(pos < size_);
     array_[pos].Insert(val, 1);
 }
 
 template<typename T>
-LinkHash<T>& Delete(const T& val) {
+LinkHash<T>& LinkHash<T>::Delete(const T& val) {
     int pos = Hash_Func(val);
     assert(pos < size_);
     int size = array_[pos].Size();
@@ -68,10 +68,10 @@ LinkHash<T>& Delete(const T& val) {
 }
 
 template<typename T>
-bool Find(const T& val) {
+bool LinkHash<T>::Find(const T& val) const {
     int pos = Hash_Func(val);
     assert(pos < size_);
-    return array[pos_].Find(val);
+    return array_[pos].Find(val);
 }
 
 

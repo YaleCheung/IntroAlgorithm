@@ -23,7 +23,6 @@ public:
     virtual Hash& Insert(const T&) = 0;
     virtual Hash& Delete(const T&) = 0;
     virtual bool Find(const T&) const = 0;
-    int Size() { return size_; };
 private:
     int size_;
 };
