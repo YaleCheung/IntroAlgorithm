@@ -38,7 +38,7 @@ public:
     Link& Insert(const T& val, const int& i);
     Link& Delete(const int& k, T* value);
     bool Find(const T& val);
-    //int search(const T& val);
+    int Search(const T& val) const; // if val exists, return the pos else return -1, which means not existed;
     int Length() const;
 #ifdef INT_DEBUG_
     void Print() const;
@@ -91,16 +91,31 @@ Link<T>& Link<T>::Insert(const T& val, const int& k) {
 }
 
 template<typename T>
+int Link<T>::Search(const T& val) {
+    assert(length_ > 1);
+    int pos = 0;
+    pNode p = p_head_->p_next;
+    while(p) {
+        pos ++;
+        if(p->data == val)
+            return pos;
+        p = p->p_next;
+    }
+    return -1;
+
+template<typename T>
 bool Link<T>::Find(const T& val) {
-     pNode p = p_head_;
-     while(p) {
-         if(p->data == val)
-             return true;
-         p = p->p_next;
-     }
-     if(p == NULL)
-         return false;
+    assert(length_ > 0);
+    pNode p = p_head_->p_next;
+    while(p) {
+        if(p->data == val)
+            return true;
+        p = p->p_next;
+    }
+    if(p == NULL)
+        return false;
 }
+
 
 template<typename T>
 Link<T>& Link<T>::Delete(const int& k, T* val) {
