@@ -20,6 +20,7 @@
 template<typename T>
 class NoCopyable {
 public:
+    NoCopyable() {}
     NoCopyable(const NoCopyable&) = delete;
     NoCopyable& operator=(const NoCopyable&) = delete; 
 };
