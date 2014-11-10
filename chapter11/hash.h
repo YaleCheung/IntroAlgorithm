@@ -21,7 +21,7 @@ template<typename T>
 class Hash {
 public:
     virtual Hash& Insert(const T&) = 0;
-    virtual Hash& Delete(T* val) = 0;
-    virtual bool Find(const T&) const = 0;
+    virtual Hash& Delete(const T& val) = 0;
+    virtual bool Find(const T&) = 0;
 };
 #endif // Hash

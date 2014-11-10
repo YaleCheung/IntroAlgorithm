@@ -32,9 +32,9 @@ public:
     // 
     LinkHash(const int& size = 100);
     LinkHash& Insert(const T&);
-    LinkHash& Delete(T* val);
-    int Hash_Func(const T&) const;
-    bool Find(const T& val) const;
+    LinkHash& Delete(const T& val);
+    int IntHashFunc(const T&);
+    bool Find(const T& val);
     int Size() {return size_;}
     
 private:
@@ -56,29 +56,34 @@ void LinkHash<T>::Init_() {
 
 template<typename T>
 LinkHash<T>& LinkHash<T>::Insert(const T& val) {
-    int pos = Hash_Func(val);
+    int pos = IntHashFunc(val);
     assert(pos < size_);
     array_[pos].Insert(val, 1);
 }
 
 template<typename T>
-LinkHash<T>& LinkHash<T>::Delete(T* val) {
-    int pos = Hash_Func(val);
+LinkHash<T>& LinkHash<T>::Delete(const T& val) {
+    int pos = IntHashFunc(val);
+    T* tmp;
     assert(pos < size_);
     int size = array_[pos].Length();
     if(size > 0) {
         int val_pos = array_[pos].Search(val);
         assert(val_pos > 0);
-        array_[pos].Delete(val_pos, val);
+        array_[pos].Delete(val_pos, tmp);
     }
     return *this;
 }
 
 template<typename T>
-bool LinkHash<T>::Find(const T& val) const {
-    int pos = Hash_Func(val);
+bool LinkHash<T>::Find(const T& val) {
+    int pos = IntHashFunc(val);
     assert(pos < size_);
     return array_[pos].Find(val);
 }
 
+template<typename T>
+int LinkHash<T>::IntHashFunc(const T& val){
+    return val % size_;
+}
 #endif // linked hash
