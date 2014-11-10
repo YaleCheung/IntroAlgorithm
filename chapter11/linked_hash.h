@@ -51,14 +51,14 @@ LinkHash<T>::LinkHash(const int& size) :
 
 template<typename T>
 void LinkHash<T>::Init_() {
-    array_ = new Link<T>[size_];
+    array_ = new Link<T>[size_]();
 }
 
 template<typename T>
 LinkHash<T>& LinkHash<T>::Insert(const T& val) {
     int pos = IntHashFunc(val);
     assert(pos < size_);
-    array_[pos].Insert(val, 1);
+    array_[pos].Insert(val, 0);
 }
 
 template<typename T>
