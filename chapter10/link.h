@@ -67,7 +67,7 @@ void Link<T>::Init_() {
 
 template<typename T>
 Link<T>& Link<T>::Insert(const T& val, const int& k) {
-    // insert a val after kth val;
+    // insert a val as kth val;
     // the first pos is 0;
     assert(k <= length_ && k >= 0);
     int i = 1;
@@ -124,7 +124,7 @@ Link<T>& Link<T>::Delete(const int& k, T* val) {
     pNode p = p_head_;
     pNode pp = p;
     // find the pp
-    for(int i = 0; i <= k; i ++) 
+    for(int i = 1; i < k; i ++) 
         p = p->p_next;
     pp = p;
     // delete
