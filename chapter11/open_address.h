@@ -56,7 +56,8 @@ void Init_() {
 
 template<typename T>
 Hash<T>& Hash<T>::Insert(const T val) {
-    int
+    int pos = HashFunc(val);
+    
 }
 #endif
 
