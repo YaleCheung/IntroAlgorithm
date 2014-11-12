@@ -67,21 +67,32 @@ Hash<T>& Hash<T>::Insert(const T val) {
     int pos = HashFunc(val);
     if(IsEmpty(pos)) // the pos is empty
         array_[pos] = val;
-    else {    // need to search for a new pos
-        int cur = (pos + 1) % size_;
-        while(! IsEmpty(cur) && (cur != pos)) {
-            cur = (cur + 1) % size_;
-        }
-        if(cur == pos) {
-            cout << "full" << endl;
-        } else {
-            array_[pos] = val;
-            empty_flags_[pos] = true;
-        }
+        return *this;
+    int cur = (pos + 1) % size_;
+    while(! IsEmpty(cur) && (cur != pos)) {
+        cur = (cur + 1) % size_;
+    }
+    if(cur == pos) {
+        cout << "full" << endl;
+    } else {
+        array_[pos] = val;
+        empty_flags_[pos] = true;
+    }
     return *this;
 }
 
 template<typename T>
-int Hash<T>::Search
+int Hash<T>::Search(const T& val) {
+    int pos = HashFunc(val);
+    if(array_[pos] == val)
+        return pos;
+    int cur = pos + 1;
+    while(array_[cur] != val && cur != pos) 
+        cur = (cur + 1) % size_;
+    if(cur == pos)
+        return -1;
+    else
+        return cur;
+}
 #endif
 
