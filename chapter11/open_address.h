@@ -31,9 +31,11 @@ public:
     int Size() const;
     int HashFunc() const;
 private:
+    void IsEmpty_(const int& pos);
     void Init_();
     int size_;
     T* array_;
+    bool* empty_flag_;
 };
 
 template<typename T>
@@ -46,18 +48,40 @@ template<typename T>
 Hash<T>::~Hash() {
     if(array_ != NULL)
         delete [] array_;
+    if(empty_flag_ != NULL)
+        delete [] empty_flag_;
     array_ = NULL;
+    empty_flag_ = NULL;
 }
 
 template<typename T>
 void Init_() {
     array_ = new T[size_];
+    empty_flag_ = new T[size_];
+    for(int i = 0; i < empty_flag_; i ++)
+        empty_flat_[i] = false;
 }
 
 template<typename T>
 Hash<T>& Hash<T>::Insert(const T val) {
     int pos = HashFunc(val);
-    
+    if(IsEmpty(pos)) // the pos is empty
+        array_[pos] = val;
+    else {    // need to search for a new pos
+        int cur = (pos + 1) % size_;
+        while(! IsEmpty(cur) && (cur != pos)) {
+            cur = (cur + 1) % size_;
+        }
+        if(cur == pos) {
+            cout << "full" << endl;
+        } else {
+            array_[pos] = val;
+            empty_flags_[pos] = true;
+        }
+    return *this;
 }
+
+template<typename T>
+int Hash<T>::Search
 #endif
 
