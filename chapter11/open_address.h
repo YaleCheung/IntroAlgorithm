@@ -66,16 +66,17 @@ void Hash<T>::Init_() {
 template<typename T>
 Hash<T>& Hash<T>::Insert(const T& val) {
     int pos = HashFunc(val);
-    if(IsEmpty_(pos)) // the pos is empty
+    if(IsEmpty_(pos)) {// the pos is empty
         array_[pos] = val;
         full_flag_[pos] = true;
         return *this;
+    }
     int cur = (pos + 1) % size_;
     while(! IsEmpty_(cur) && (cur != pos)) {
         cur = (cur + 1) % size_;
     }
     if(cur == pos) {
-        fprintf(stderr, "full");
+        fprintf(stderr, "full\n");
     } else {
         array_[pos] = val;
         full_flag_[pos] = true;
