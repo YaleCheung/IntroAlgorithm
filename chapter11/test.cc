@@ -21,9 +21,8 @@
 #include "open_address.h"
 using namespace std;
 int main(int argc, char* argv[]) {
-    Hash<int> hash(100);
-    hash.Insert(1);
-    for(int i = 0; i < 1000; i ++)
+    Hash<int> hash(2);
+    for(int i = 0; i < 5; i ++)
         hash.Insert(i);
     return 0;
 }

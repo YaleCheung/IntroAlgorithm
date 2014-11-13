@@ -41,7 +41,7 @@ private:
 
 template<typename T>
 Hash<T>::Hash(const int & size) :
-    size_(size), array_(NULL) {
+    size_(size), array_(NULL), full_flag_(NULL) {
     Init_();
 }
 
