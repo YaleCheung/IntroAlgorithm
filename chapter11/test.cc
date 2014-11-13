@@ -18,15 +18,13 @@
 #include <stdio.h>
 #include <iostream>
 
-#include "linked_hash.h"
+#include "open_address.h"
 using namespace std;
 int main(int argc, char* argv[]) {
-    LinkHash<int> hash;
+    Hash<int> hash(100);
     hash.Insert(1);
-    for(int i = 0; i < 100; i ++)
+    for(int i = 0; i < 1000; i ++)
         hash.Insert(i);
-    for(int i = 0; i < 100; i++) 
-        hash.Delete(i);
     return 0;
 }
 

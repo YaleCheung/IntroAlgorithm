@@ -18,7 +18,8 @@
 
 #ifndef OPEN_ADDRESS_HASH_H
 #define OPEN_ADDRESS_HASH_H
-#include "../lib/nocopyable"
+#include "../lib/nocopyable.h"
+#include <stdio.h>
 
 // can only used for int now; should design for all 
 template<typename T>
@@ -29,13 +30,13 @@ public:
     Hash& Insert(const T& val);
     int Search(const T& val);
     int Size() const;
-    int HashFunc() const;
+    int HashFunc(const T& val) const;
 private:
-    void IsEmpty_(const int& pos);
+    bool IsEmpty_(const int& pos);
     void Init_();
     int size_;
     T* array_;
-    bool* empty_flag_;
+    bool* full_flag_;
 };
 
 template<typename T>
@@ -48,35 +49,36 @@ template<typename T>
 Hash<T>::~Hash() {
     if(array_ != NULL)
         delete [] array_;
-    if(empty_flag_ != NULL)
-        delete [] empty_flag_;
+    if(full_flag_ != NULL)
+        delete [] full_flag_;
     array_ = NULL;
-    empty_flag_ = NULL;
+    full_flag_ = NULL;
 }
 
 template<typename T>
-void Init_() {
+void Hash<T>::Init_() {
     array_ = new T[size_];
-    empty_flag_ = new T[size_];
-    for(int i = 0; i < empty_flag_; i ++)
-        empty_flat_[i] = false;
+    full_flag_ = new bool[size_];
+    for(int i = 0; i < size_; i ++)
+        full_flag_[i] = false;
 }
 
 template<typename T>
-Hash<T>& Hash<T>::Insert(const T val) {
+Hash<T>& Hash<T>::Insert(const T& val) {
     int pos = HashFunc(val);
-    if(IsEmpty(pos)) // the pos is empty
+    if(IsEmpty_(pos)) // the pos is empty
         array_[pos] = val;
+        full_flag_[pos] = true;
         return *this;
     int cur = (pos + 1) % size_;
-    while(! IsEmpty(cur) && (cur != pos)) {
+    while(! IsEmpty_(cur) && (cur != pos)) {
         cur = (cur + 1) % size_;
     }
     if(cur == pos) {
-        cout << "full" << endl;
+        fprintf(stderr, "full");
     } else {
         array_[pos] = val;
-        empty_flags_[pos] = true;
+        full_flag_[pos] = true;
     }
     return *this;
 }
@@ -94,5 +96,19 @@ int Hash<T>::Search(const T& val) {
     else
         return cur;
 }
-#endif
+template<typename T>
+int Hash<T>::Size() const {
+    return size_;
+}
 
+template<typename T>
+bool Hash<T>::IsEmpty_(const int& pos) {
+    return !full_flag_[pos];
+}
+
+// assume the emement are ints
+template<typename T>
+int Hash<T>::HashFunc(const T& val) const {
+    return val % size_;
+}
+#endif // open addressed hash
