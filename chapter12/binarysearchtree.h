@@ -99,7 +99,47 @@ BinarySearchTree<T>& BinarySearchTree<T>::Insert(const T& val) {
 template<typename T>
 BinarySearchTree<T>& BinarySearchTree<T>::Delete(const T& val) {
     // need to consider multiple condition
-    
+    // if the deletion node has right node, then the min right side is under consideration
+    // else if the deletion node has left node, then the max left side is under consideration
+    // find the node to be deleted and its parents
+    Node<T>* p = root_;
+    while(p != NULL && p->data_ != val) {
+        if(p->data_ < val) 
+            p = p->left_;
+        else if(p->data > val) 
+            p = p->right_;
+    } 
+    if(p != NULL) { // find
+        Node<T>* node_cur = p;
+        if(p->right_ != NULL) {
+            p = p->right;
+            while(p -> left_ != NULL)
+                p = p->left_;
+            // p is the node to replace the delete node;
+            // exchange the val only, do not delete the node node_delete
+            node_cur->data_ = val;
+            delete p;
+        } else {
+            // has left side only
+            p = p->left_;
+            node_cur-> data_ = p->data_;
+            // delete p not hte node_delete;
+            node_cur->left_ = p->left_;
+            node_cur->right = p->right_;
+            delete p;
+        }
+    } 
+    return *this;
+}
+
+template<typename T>
+bool BinarySearchTree<T>::Find(const T& val) {
+    Node<T>* p = root_;
+    while(p != NULL && p->data_ != val) {
+        if(p->data_ < val) p = p->left_;
+        else if(p->data_ > val) p = p->right_;
+    }
+    return (p != NULL) ? true : false;
 }
 
 #endif //BINARY_SEARCH_TREE_H
