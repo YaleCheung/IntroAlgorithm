@@ -25,6 +25,7 @@
 #define NULL 0
 #endif
 
+
 template<typename T>
 class BinarySearchTree;
 
@@ -49,6 +50,7 @@ Node<T>::Node() :
 template<typename T>
 Node<T>::Node(const T& val, Node* left, Node* right) :
     data_(val), left_(left), right_(right) {}
+
 
 template<typename T>
 class BinarySearchTree : NoCopyable<T> {
@@ -150,12 +152,18 @@ bool BinarySearchTree<T>::Find(const T& val) {
 
 template<typename T>
 void BinarySearchTree<T>::InOrderR(Func func) {
-    if(root_ != NULL)
-        InOrderR(root_);
+    InOrderR(root_, Func func);
 }
 template<typename T>
-void BinarySearchTree<T>::InOrderR_(Node<T>* node) {
+void BinarySearchTree<T>::InOrderR_(Node<T>* node, Func func) {
+    if(node == NULL)
+        return;
     Node<T>* p = node;
-    In
+    if(p->left_ != NULL) InOrderR_(p->left_);
+    func(p);
+    if(p->right_ != NULL) InOrderR_(p->right_);
 }
+
+template<typename T>
+void BinarySearchTree<T>::
 #endif //BINARY_SEARCH_TREE_H
