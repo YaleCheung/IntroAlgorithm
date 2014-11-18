@@ -55,7 +55,7 @@ class BinarySearchTree : NoCopyable<T> {
 public:
     typedef void (*Func)(Node<T>*);
     BinarySearchTree();
-    BinarySearchTree(const T val, const BinarySearchTree& l, const BinarySearchTree& r);
+    BinarySearchTree(const T& val, const BinarySearchTree& l, const BinarySearchTree& r);
     BinarySearchTree& Insert(const T& val);
     BinarySearchTree& Delete(const T& val);
 
@@ -73,10 +73,33 @@ private:
 
 template<typename T>
 BinarySearchTree<T>::BinarySearchTree() :
-    root_(NULL) {
-   Init_();
-};
+    root_(NULL) {}
 
 template<typename T>
-void BinarySearchTree<T>::
+BinarySearchTree<T>::BinarySearchTree(const T& val, const BinarySearchTree& l, const BinarySearchTree& r) {
+    root_ = new Node<T>();
+    root_ -> data_ = val; 
+    root_ -> left = l->root;
+    root_ -> right = r->root;
+}
+
+template<typename T>
+BinarySearchTree<T>& BinarySearchTree<T>::Insert(const T& val) {
+    Node<T> node_insert = new Node<T>(val, NULL, NULL);
+    // find a pos to insert the node_insert
+    Node<T> p = root_;
+    while(p != NULL) {
+        if(val > p->data_) p = p->right_;
+        if(val < p->data_) p = p->left_;
+    }
+    // p is a NULL pointer;
+    p = node_insert;
+}
+
+template<typename T>
+BinarySearchTree<T>& BinarySearchTree<T>::Delete(const T& val) {
+    // need to consider multiple condition
+    
+}
+
 #endif //BINARY_SEARCH_TREE_H
