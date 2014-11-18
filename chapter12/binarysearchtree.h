@@ -67,7 +67,13 @@ public:
     void LastOrderI(Func func);
     void FirstOrderI(Func func);
 private:
-    void Init_();
+    void InOrderR_(Node<T>* node);
+    void LastOrderR(Node<T>* node);
+    void FirstOrderR(Node<T>* node);
+    void InOrderI(Node<T>* node);
+    void LastOrderI(Node<T>* node);
+    void FirstOrderI(Node<T>* node);
+
     Node<T>* root_;
 };
 
@@ -142,4 +148,14 @@ bool BinarySearchTree<T>::Find(const T& val) {
     return (p != NULL) ? true : false;
 }
 
+template<typename T>
+void BinarySearchTree<T>::InOrderR(Func func) {
+    if(root_ != NULL)
+        InOrderR(root_);
+}
+template<typename T>
+void BinarySearchTree<T>::InOrderR_(Node<T>* node) {
+    Node<T>* p = node;
+    In
+}
 #endif //BINARY_SEARCH_TREE_H
