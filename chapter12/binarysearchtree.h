@@ -19,6 +19,7 @@
 #ifndef BINARY_SEARCH_TREE_H
 #define BINARY_SEARCH_TREE_H
 
+#include <iostream>
 #include "../lib/nocopyable.h"
 
 #ifndef NULL
@@ -62,19 +63,23 @@ public:
     BinarySearchTree& Delete(const T& val);
 
     bool Find(const T& val);
-    void InOrderR(Func func);
-    void LastOrderR(Func func);
-    void FirstOrderR(Func func);
-    void InOrderI(Func func);
-    void LastOrderI(Func func);
-    void FirstOrderI(Func func);
+    void SetFunc(Func func);
+    void InOrderR();
+    void PreOrderR();
+    void PostOrderR();
+    //void InOrderI(Func func);
+    //void PreOrderI(Func func);
+    //void PostOrderI(Func func);
 private:
+    void Print_(Node<T>* node) {
+        std::cout << node -> data_ << std::endl;
+    }
     void InOrderR_(Node<T>* node);
-    void LastOrderR(Node<T>* node);
-    void FirstOrderR(Node<T>* node);
-    void InOrderI(Node<T>* node);
-    void LastOrderI(Node<T>* node);
-    void FirstOrderI(Node<T>* node, Func func);
+    void PreOrderR_(Node<T>* node);
+    void PostOrderR_(Node<T>* node);
+    //void InOrderI_(Node<T>* node);
+    //void PreOrderI_(Node<T>* node);
+    //void PostOrderI_(Node<T>* node, Func func);
 
     Node<T>* root_;
     Func func_;
@@ -82,7 +87,9 @@ private:
 
 template<typename T>
 BinarySearchTree<T>::BinarySearchTree() :
-    root_(NULL) {}
+    root_(NULL) {
+    func_ = Print_;
+}
 
 template<typename T>
 BinarySearchTree<T>::BinarySearchTree(const T& val, const BinarySearchTree& l, const BinarySearchTree& r) {
@@ -90,6 +97,7 @@ BinarySearchTree<T>::BinarySearchTree(const T& val, const BinarySearchTree& l, c
     root_ -> data_ = val; 
     root_ -> left = l->root;
     root_ -> right = r->root;
+    func_ = Print_;
 }
 
 template<typename T>
@@ -152,8 +160,7 @@ bool BinarySearchTree<T>::Find(const T& val) {
 }
 
 template<typename T>
-void BinarySearchTree<T>::InOrderR(BinarySearchTree<T>::Func func) {
-    func_ = func;
+void BinarySearchTree<T>::InOrderR() {
     InOrderR(root_);
 }
 template<typename T>
@@ -167,5 +174,30 @@ void BinarySearchTree<T>::InOrderR_(Node<T>* node) {
 }
 
 template<typename T>
-void BinarySearchTree<T>::
+void BinarySearchTree<T>::PreOrderR() {
+    PreOrderR_(root_);
+}
+
+template<typename T>
+void BinarySearchTree<T>::PreOrderR_(Node<T>* node) {
+    if(node == NULL) 
+        return;
+    func_(node);
+    if(node->left_) PreOrderR_(node->left_);
+    if(node->right_) PreOrderR_(node->right_);
+}
+
+template<typename T>
+void BinarySearchTree<T>::PostOrderR() {
+    PostOrderR_(root_);
+}
+
+template<typename T>
+void BinarySearchTree<T>::PostOrderR_(Node<T>* node) {
+    if(node == NULL)
+        return;
+    if(node->left_) PostOrderR_(node->left_);
+    if(node->rigth_) PostOrderR_(node->right_);
+    func_(node);
+}
 #endif //BINARY_SEARCH_TREE_H
