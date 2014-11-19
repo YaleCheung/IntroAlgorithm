@@ -55,7 +55,7 @@ Node<T>::Node(const T& val, Node* left, Node* right) :
 template<typename T>
 class BinarySearchTree : NoCopyable<T> {
 public:
-    typedef void (*Func)(Node<T>*);
+    typedef void (BinarySearchTree<T>::*Func)(Node<T>*);
     BinarySearchTree();
     BinarySearchTree(const T& val, const BinarySearchTree& l, const BinarySearchTree& r);
     BinarySearchTree& Insert(const T& val);
@@ -74,9 +74,10 @@ private:
     void FirstOrderR(Node<T>* node);
     void InOrderI(Node<T>* node);
     void LastOrderI(Node<T>* node);
-    void FirstOrderI(Node<T>* node);
+    void FirstOrderI(Node<T>* node, Func func);
 
     Node<T>* root_;
+    Func func_;
 };
 
 template<typename T>
@@ -151,16 +152,17 @@ bool BinarySearchTree<T>::Find(const T& val) {
 }
 
 template<typename T>
-void BinarySearchTree<T>::InOrderR(Func func) {
-    InOrderR(root_, Func func);
+void BinarySearchTree<T>::InOrderR(BinarySearchTree<T>::Func func) {
+    func_ = func;
+    InOrderR(root_);
 }
 template<typename T>
-void BinarySearchTree<T>::InOrderR_(Node<T>* node, Func func) {
+void BinarySearchTree<T>::InOrderR_(Node<T>* node) {
     if(node == NULL)
         return;
     Node<T>* p = node;
     if(p->left_ != NULL) InOrderR_(p->left_);
-    func(p);
+    func_(p);
     if(p->right_ != NULL) InOrderR_(p->right_);
 }
 
