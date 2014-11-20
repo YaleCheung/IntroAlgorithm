@@ -56,7 +56,7 @@ Node<T>::Node(const T& val, Node* left, Node* right) :
 template<typename T>
 class BinarySearchTree : NoCopyable<T> {
 public:
-    typedef void (BinarySearchTree<T>::*Func)(Node<T>*);
+    typedef void (BinarySearchTree::*Func)(Node<T>* node);
     BinarySearchTree();
     BinarySearchTree(const T& val, const BinarySearchTree& l, const BinarySearchTree& r);
     BinarySearchTree& Insert(const T& val);
@@ -82,7 +82,7 @@ private:
     //void PostOrderI_(Node<T>* node, Func func);
 
     Node<T>* root_;
-    Func func_;
+    typename BinarySearchTree::Func func_;
 };
 
 template<typename T>
@@ -200,4 +200,7 @@ void BinarySearchTree<T>::PostOrderR_(Node<T>* node) {
     if(node->rigth_) PostOrderR_(node->right_);
     func_(node);
 }
+
+template<typename T>
+void 
 #endif //BINARY_SEARCH_TREE_H
