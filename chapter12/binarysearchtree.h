@@ -80,15 +80,14 @@ private:
     //void InOrderI_(Node<T>* node);
     //void PreOrderI_(Node<T>* node);
     //void PostOrderI_(Node<T>* node, Func func);
-
+    Func func_;
     Node<T>* root_;
-    typename BinarySearchTree::Func func_;
 };
 
 template<typename T>
 BinarySearchTree<T>::BinarySearchTree() :
     root_(NULL) {
-    func_ = Print_;
+    func_ = &BinarySearchTree<T>::Print_;
 }
 
 template<typename T>
@@ -97,20 +96,35 @@ BinarySearchTree<T>::BinarySearchTree(const T& val, const BinarySearchTree& l, c
     root_ -> data_ = val; 
     root_ -> left = l->root;
     root_ -> right = r->root;
-    func_ = Print_;
+    func_ = &BinarySearchTree<T>::Print_;
 }
 
 template<typename T>
 BinarySearchTree<T>& BinarySearchTree<T>::Insert(const T& val) {
-    Node<T> node_insert = new Node<T>(val, NULL, NULL);
+    Node<T>* node_insert = new Node<T>(val, NULL, NULL);
+    if(NULL == root_) {
+        root_ = node_insert;
+        return *this;
+    }
     // find a pos to insert the node_insert
-    Node<T> p = root_;
+    Node<T>* p = root_;
+    Node<T>* pp;
     while(p != NULL) {
-        if(val > p->data_) p = p->right_;
-        if(val < p->data_) p = p->left_;
+        if(val > p->data_) {
+            pp = p;
+            p = p->right_;
+        } else if(val < p->data_)  {
+                pp = p;
+                p = p->left_;
+        }
     }
     // p is a NULL pointer;
     p = node_insert;
+    if (val > pp->data_) 
+        pp-> right_ = p;
+    else if (val < pp->data_)
+        pp-> left_ = p;
+    return *this;
 }
 
 template<typename T>
@@ -120,22 +134,32 @@ BinarySearchTree<T>& BinarySearchTree<T>::Delete(const T& val) {
     // else if the deletion node has left node, then the max left side is under consideration
     // find the node to be deleted and its parents
     Node<T>* p = root_;
+    Node<T>* pp;
     while(p != NULL && p->data_ != val) {
-        if(p->data_ < val) 
+        if(p->data_ < val) {
+            pp = p;
             p = p->left_;
-        else if(p->data > val) 
+        }
+        else if(p->data > val) {
+            pp = p;
             p = p->right_;
+        }
     } 
     if(p != NULL) { // find
         Node<T>* node_cur = p;
         if(p->right_ != NULL) {
             p = p->right;
-            while(p -> left_ != NULL)
+            while(p->left_ != NULL) {
+                pp = p;
                 p = p->left_;
+            }
             // p is the node to replace the delete node;
             // exchange the val only, do not delete the node node_delete
-            node_cur->data_ = val;
+            if(p == pp->left_) pp->left_ = NULL;
+            else if(p == pp->right_) pp->right_ = NULL;
+            node_cur->data_ = p->data_;
             delete p;
+            // need to judge whether the node is the left nor the right  successor llof pp
         } else {
             // has left side only
             p = p->left_;
@@ -161,15 +185,16 @@ bool BinarySearchTree<T>::Find(const T& val) {
 
 template<typename T>
 void BinarySearchTree<T>::InOrderR() {
-    InOrderR(root_);
+    InOrderR_(root_);
 }
+
 template<typename T>
 void BinarySearchTree<T>::InOrderR_(Node<T>* node) {
     if(node == NULL)
         return;
     Node<T>* p = node;
     if(p->left_ != NULL) InOrderR_(p->left_);
-    func_(p);
+    (this->*func_)(p);
     if(p->right_ != NULL) InOrderR_(p->right_);
 }
 
@@ -182,7 +207,7 @@ template<typename T>
 void BinarySearchTree<T>::PreOrderR_(Node<T>* node) {
     if(node == NULL) 
         return;
-    func_(node);
+    (this->*func_)(node);
     if(node->left_) PreOrderR_(node->left_);
     if(node->right_) PreOrderR_(node->right_);
 }
@@ -198,9 +223,7 @@ void BinarySearchTree<T>::PostOrderR_(Node<T>* node) {
         return;
     if(node->left_) PostOrderR_(node->left_);
     if(node->rigth_) PostOrderR_(node->right_);
-    func_(node);
+    (this->*func_)(node);
 }
 
-template<typename T>
-void 
 #endif //BINARY_SEARCH_TREE_H
