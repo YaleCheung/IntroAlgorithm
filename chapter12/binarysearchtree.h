@@ -73,8 +73,8 @@ public:
     void PostOrderR();
     void LevelOrder();
     void InOrderI();
-    void PreOrderI();
-    void PostOrderI();
+    //void PreOrderI();
+    //void PostOrderI();
 private:
     void Print_(Node<T>* node) {
         std::cout << node->data_ << std::endl;
@@ -91,8 +91,8 @@ private:
     void PostOrderR_(Node<T>* node);
 
     void LevelOrder_(Node<T>* node);
-    //void InOrderI_(Node<T>* node);
-    void PreOrderI_(Node<T>* node);
+    void InOrderI_(Node<T>* node);
+    //void PreOrderI_(Node<T>* node);
     //void PostOrderI_(Node<T>* node);
     Func func_;
     Node<T>* root_;
@@ -256,21 +256,21 @@ void BinarySearchTree<T>::LevelOrder_(Node<T>* node) {
     while(q.size()) {
         Node<T>* p = q.front();
         (this->*func_)(p);
+        if (p->left_) 
+            q.push(p->left_);
+        if (p->right_) 
+            q.push(p->right_);
         q.pop();
-        if (node->left_) 
-            q.push(node);
-        if (node->right_) 
-            q.push(node);
     }
 }
 
 template<typename T>
-void BinarySearchTree<T>::PreOrderI() {
-    PreOrderI_(root_);
+void BinarySearchTree<T>::InOrderI() {
+    InOrderI_(root_);
 }
 
 template<typename T>
-void BinarySearchTree<T>::PreOrderI_(Node<T>* node) {
+void BinarySearchTree<T>::InOrderI_(Node<T>* node) {
     std::stack<Node<T>*> stack;
     while(node) {
         stack.push(node);

@@ -27,9 +27,15 @@ int main() {
         int data = rand() % 100;
         tree.Insert(data);
     }
-    printf("InOrder Traverse");
+    printf("InOrder Traverse\n");
     tree.InOrderR();
+    printf("Level Order Traverse\n");
     tree.LevelOrder();
-    printf("\n");
+    printf("PreOrder Traverse\n");
+    tree.PreOrderR();
+    printf("PostOrder Traverse\n");
+    tree.PostOrderR();
+    printf("InOrder Iterator func\n");
+    tree.InOrderI();
     return 0;
 }
