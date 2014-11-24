@@ -21,6 +21,7 @@
 
 #include <iostream>
 #include "../lib/nocopyable.h"
+#include <queue>
 
 #ifndef NULL
 #define NULL 0
@@ -51,6 +52,8 @@ Node<T>::Node() :
 template<typename T>
 Node<T>::Node(const T& val, Node* left, Node* right) :
     data_(val), left_(left), right_(right) {}
+template<typename T>
+Node<T>::~Node(){}
 
 
 template<typename T>
@@ -60,23 +63,32 @@ public:
     BinarySearchTree();
     BinarySearchTree(const T& val, const BinarySearchTree& l, const BinarySearchTree& r);
     BinarySearchTree& Insert(const T& val);
-    BinarySearchTree& Delete(const T& val);
+    ~BinarySearchTree();
+    //BinarySearchTree& Delete(const T& val);
 
     bool Find(const T& val);
-    void SetFunc(Func func);
     void InOrderR();
     void PreOrderR();
     void PostOrderR();
+    void LevelOrder();
     //void InOrderI(Func func);
     //void PreOrderI(Func func);
     //void PostOrderI(Func func);
 private:
     void Print_(Node<T>* node) {
-        std::cout << node -> data_ << std::endl;
+        std::cout << node->data_ << std::endl;
+    }
+
+    void Free_(Node<T>* node) {
+        if(node != NULL) {
+            delete  node;
+            node = NULL;
+        }
     }
     void InOrderR_(Node<T>* node);
     void PreOrderR_(Node<T>* node);
     void PostOrderR_(Node<T>* node);
+    void LevelOrder_(Node<T>* node);
     //void InOrderI_(Node<T>* node);
     //void PreOrderI_(Node<T>* node);
     //void PostOrderI_(Node<T>* node, Func func);
@@ -127,51 +139,55 @@ BinarySearchTree<T>& BinarySearchTree<T>::Insert(const T& val) {
     return *this;
 }
 
-template<typename T>
+/*template<typename T>
 BinarySearchTree<T>& BinarySearchTree<T>::Delete(const T& val) {
     // need to consider multiple condition
     // if the deletion node has right node, then the min right side is under consideration
     // else if the deletion node has left node, then the max left side is under consideration
     // find the node to be deleted and its parents
     Node<T>* p = root_;
-    Node<T>* pp;
+    Node<T>* pp = NULL;
     while(p != NULL && p->data_ != val) {
-        if(p->data_ < val) {
+        if(p->data_ > val) {
             pp = p;
             p = p->left_;
         }
-        else if(p->data > val) {
+        else if(p->data_ < val) {
             pp = p;
             p = p->right_;
         }
     } 
+    // if  pp == NULL, then pp is the root
     if(p != NULL) { // find
+        if(pp == NULL) // delete the root node;
+            
         Node<T>* node_cur = p;
         if(p->right_ != NULL) {
-            p = p->right;
+            p = p->right_;
             while(p->left_ != NULL) {
                 pp = p;
                 p = p->left_;
             }
             // p is the node to replace the delete node;
             // exchange the val only, do not delete the node node_delete
-            if(p == pp->left_) pp->left_ = NULL;
-            else if(p == pp->right_) pp->right_ = NULL;
             node_cur->data_ = p->data_;
+            pp->left_ = NULL;
             delete p;
             // need to judge whether the node is the left nor the right  successor llof pp
         } else {
             // has left side only
-            p = p->left_;
-            node_cur-> data_ = p->data_;
             // delete p not hte node_delete;
-            node_cur->left_ = p->left_;
-            node_cur->right = p->right_;
+            if(pp -> left_ == p)
+                pp -> left_ = p->left_;
+            else
+                pp->right_ = p->left_;
             delete p;
+            p = NULL;
         }
     } 
     return *this;
 }
+*/
 
 template<typename T>
 bool BinarySearchTree<T>::Find(const T& val) {
@@ -222,8 +238,32 @@ void BinarySearchTree<T>::PostOrderR_(Node<T>* node) {
     if(node == NULL)
         return;
     if(node->left_) PostOrderR_(node->left_);
-    if(node->rigth_) PostOrderR_(node->right_);
+    if(node->right_) PostOrderR_(node->right_);
     (this->*func_)(node);
 }
 
+template<typename T>
+void BinarySearchTree<T>::LevelOrder() {
+    LevelOrder_(root_);
+}
+
+template<typename T>
+void BinarySearchTree<T>::LevelOrder_(Node<T>* node) {
+    std::queue<T> q;
+    q.push(node);
+    while(q.size()) {
+        Node<T>* p = q.pop();
+        func_(p);
+        if (node->left_) 
+            q.push(node->data_);
+        if (node->right_) 
+            q.push(node->data_);
+    }
+}
+
+template<typename T>
+BinarySearchTree<T>::~BinarySearchTree() {
+   func_ = &BinarySearchTree<T>::Free_; 
+   PostOrderR_(root_);
+}
 #endif //BINARY_SEARCH_TREE_H
