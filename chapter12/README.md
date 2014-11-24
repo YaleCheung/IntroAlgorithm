@@ -1,4 +1,1 @@
-git is wrong
-am i rigth
-a new test for git
-some thing is wrong with git
+although the Iterator Inorder is right; however, it is too complex;
