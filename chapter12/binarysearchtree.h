@@ -22,6 +22,7 @@
 #include <iostream>
 #include "../lib/nocopyable.h"
 #include <queue>
+#include <stack>
 
 #ifndef NULL
 #define NULL 0
@@ -71,9 +72,9 @@ public:
     void PreOrderR();
     void PostOrderR();
     void LevelOrder();
-    //void InOrderI(Func func);
-    //void PreOrderI(Func func);
-    //void PostOrderI(Func func);
+    void InOrderI();
+    void PreOrderI();
+    void PostOrderI();
 private:
     void Print_(Node<T>* node) {
         std::cout << node->data_ << std::endl;
@@ -88,10 +89,11 @@ private:
     void InOrderR_(Node<T>* node);
     void PreOrderR_(Node<T>* node);
     void PostOrderR_(Node<T>* node);
+
     void LevelOrder_(Node<T>* node);
     //void InOrderI_(Node<T>* node);
-    //void PreOrderI_(Node<T>* node);
-    //void PostOrderI_(Node<T>* node, Func func);
+    void PreOrderI_(Node<T>* node);
+    //void PostOrderI_(Node<T>* node);
     Func func_;
     Node<T>* root_;
 };
@@ -249,15 +251,43 @@ void BinarySearchTree<T>::LevelOrder() {
 
 template<typename T>
 void BinarySearchTree<T>::LevelOrder_(Node<T>* node) {
-    std::queue<T> q;
+    std::queue<Node<T>*> q;
     q.push(node);
     while(q.size()) {
-        Node<T>* p = q.pop();
-        func_(p);
+        Node<T>* p = q.front();
+        (this->*func_)(p);
+        q.pop();
         if (node->left_) 
-            q.push(node->data_);
+            q.push(node);
         if (node->right_) 
-            q.push(node->data_);
+            q.push(node);
+    }
+}
+
+template<typename T>
+void BinarySearchTree<T>::PreOrderI() {
+    PreOrderI_(root_);
+}
+
+template<typename T>
+void BinarySearchTree<T>::PreOrderI_(Node<T>* node) {
+    std::stack<Node<T>*> stack;
+    while(node) {
+        stack.push(node);
+        while(node->left_) {
+            node = node->left_;
+            stack.push(node);
+        }
+        (this->*func_)(node);
+        stack.pop();
+        while(node->right_ == NULL && stack.size() > 0) {
+            node = stack.top();
+            (this->*func_)(node);
+            stack.pop();
+        }
+        if (node->right_) {
+            node = node->right_;
+        } else break;
     }
 }
 
@@ -266,4 +296,5 @@ BinarySearchTree<T>::~BinarySearchTree() {
    func_ = &BinarySearchTree<T>::Free_; 
    PostOrderR_(root_);
 }
+
 #endif //BINARY_SEARCH_TREE_H
