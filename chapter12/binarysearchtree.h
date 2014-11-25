@@ -296,7 +296,7 @@ template<typename T>
 void BinarySearchTree<T>::InOrderI_(Node<T>* node) {
     std::stack<Node<T>*> stack;
     stack.push(node);
-    if(node || stack.size() > 0) {
+    while(node || stack.size() > 0) {
         if(node->left_) {
             stack.push(node->left_);
             node = node->left_;
