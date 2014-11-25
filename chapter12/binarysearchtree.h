@@ -73,8 +73,8 @@ public:
     void PostOrderR();
     void LevelOrder();
     void InOrderI();
-    //void PreOrderI();
-    //void PostOrderI();
+    void PreOrderI();
+    void PostOrderI();
 private:
     void Print_(Node<T>* node) {
         std::cout << node->data_ << std::endl;
@@ -92,8 +92,8 @@ private:
 
     void LevelOrder_(Node<T>* node);
     void InOrderI_(Node<T>* node);
-    //void PreOrderI_(Node<T>* node);
-    //void PostOrderI_(Node<T>* node);
+    void PreOrderI_(Node<T>* node);
+    void PostOrderI_(Node<T>* node);
     Func func_;
     Node<T>* root_;
 };
@@ -268,46 +268,37 @@ template<typename T>
 void BinarySearchTree<T>::InOrderI() {
     InOrderI_(root_);
 }
-// ugly code
-/*template<typename T>
-void BinarySearchTree<T>::InOrderI_(Node<T>* node) {
-    std::stack<Node<T>*> stack;
-    while(node) {
-        stack.push(node);
-        while(node->left_) {
-            node = node->left_;
-            stack.push(node);
-        }
-        (this->*func_)(node);
-        stack.pop();
-        while(node->right_ == NULL && stack.size() > 0) {
-            node = stack.top();
-            (this->*func_)(node);
-            stack.pop();
-        }
-        if (node->right_) {
-            node = node->right_;
-        } else break;
-    }
-}*/
-
 
 template<typename T>
 void BinarySearchTree<T>::InOrderI_(Node<T>* node) {
     std::stack<Node<T>*> stack;
-    stack.push(node);
-    while(node || stack.size() > 0) {
-        if(node->left_) {
-            stack.push(node->left_);
+    while(node || stack.size()) {
+        while(node) {
+            stack.push(node);
             node = node->left_;
-        } else {
+        }
+        if(! stack.empty()) {
             node = stack.top();
             (this->*func_)(node);
             stack.pop();
-            if(node->right_) {
-                stack.push(node->right_);
-                node = node->right_;
-            }
+            node = node->right_;
+        }
+    }
+}
+
+template<typename T>
+void BinarySearchTree<T>::PreOrderI() {
+    BinarySearchTree<T>::PreOrderI_(root_);
+}
+
+template<typename T>
+void BinarySearchTree<T>::PreOrderI_(Node<T>* node) {
+    stack<Node<T>*> stack;    
+    while(node || stack.size()) {
+        while(node) {
+            this->*func_(node);
+            stack.push(node);
+            node = node->left_;
         }
     }
 }
