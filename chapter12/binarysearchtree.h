@@ -268,8 +268,8 @@ template<typename T>
 void BinarySearchTree<T>::InOrderI() {
     InOrderI_(root_);
 }
-
-template<typename T>
+// ugly code
+/*template<typename T>
 void BinarySearchTree<T>::InOrderI_(Node<T>* node) {
     std::stack<Node<T>*> stack;
     while(node) {
@@ -288,6 +288,27 @@ void BinarySearchTree<T>::InOrderI_(Node<T>* node) {
         if (node->right_) {
             node = node->right_;
         } else break;
+    }
+}*/
+
+
+template<typename T>
+void BinarySearchTree<T>::InOrderI_(Node<T>* node) {
+    std::stack<Node<T>*> stack;
+    stack.push(node);
+    if(node || stack.size() > 0) {
+        if(node->left_) {
+            stack.push(node->left_);
+            node = node->left_;
+        } else {
+            node = stack.top();
+            (this->*func_)(node);
+            stack.pop();
+            if(node->right_) {
+                stack.push(node->right_);
+                node = node->right_;
+            }
+        }
     }
 }
 
