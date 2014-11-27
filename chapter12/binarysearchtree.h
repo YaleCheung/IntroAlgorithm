@@ -316,15 +316,7 @@ void BinarySearchTree<T>::PostOrderI() {
 template<typename T>
 void BinarySearchTree<T>::PostOrderI_(Node<T>* node) {
     std::stack<Node<T>*> stack;
-    while(node || stack.size()) {
-        while(node) {
-            stack.push(node);
-            node = node->left_;
-        }
-        if(! stack.empty()) {
-            
-        }
-    }
+
 }
 template<typename T>
 BinarySearchTree<T>::~BinarySearchTree() {
