@@ -293,16 +293,39 @@ void BinarySearchTree<T>::PreOrderI() {
 
 template<typename T>
 void BinarySearchTree<T>::PreOrderI_(Node<T>* node) {
-    stack<Node<T>*> stack;    
+   std::stack<Node<T>*> stack;    
     while(node || stack.size()) {
         while(node) {
             this->*func_(node);
             stack.push(node);
             node = node->left_;
         }
+        if(! stack.empty()) {
+            node = stack.top();
+            node = node->right_;
+            stack.pop();
+        }
     }
 }
 
+template<typename T>
+void BinarySearchTree<T>::PostOrderI() {
+    PostOrderI_(root_);
+}
+
+template<typename T>
+void BinarySearchTree<T>::PostOrderI_(Node<T>* node) {
+    std::stack<Node<T>*> stack;
+    while(node || stack.size()) {
+        while(node) {
+            stack.push(node);
+            node = node->left_;
+        }
+        if(! stack.empty()) {
+            
+        }
+    }
+}
 template<typename T>
 BinarySearchTree<T>::~BinarySearchTree() {
    func_ = &BinarySearchTree<T>::Free_; 
