@@ -29,10 +29,11 @@
 template<typename T>
 class RBTree;
 
+enum Color {black = 0, red = 1};
+
 template<typename T>
 class Node {
 public:
-    enum Color {black = 0, red = 1};
     friend RBTree<T>; 
     Node();
     Node(const T& val, Node* left, Node* right, Node* parent, Color color);
@@ -69,4 +70,16 @@ private:
 };
 #endif
 
-template
+template<typename T>
+RBTree<T>::RBTree(const T& val) {
+    root_ = new Node<T> (val, NULL, NULL, NULL, black);
+}
+
+template<typename T>
+RBTree<T>& RBTree<T>::Insert(const T& val) {
+
+}
+
+template<typename T>
+RBTree<T>& RBTree<T>::Delete(const T& val) {
+}
