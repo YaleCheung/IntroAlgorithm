@@ -68,7 +68,6 @@ public:
 private:
     Node<T>* root_;
 };
-#endif
 
 template<typename T>
 RBTree<T>::RBTree(const T& val) {
@@ -77,9 +76,9 @@ RBTree<T>::RBTree(const T& val) {
 
 template<typename T>
 RBTree<T>& RBTree<T>::Insert(const T& val) {
-
 }
 
 template<typename T>
 RBTree<T>& RBTree<T>::Delete(const T& val) {
 }
+#endif
