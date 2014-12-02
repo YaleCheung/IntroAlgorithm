@@ -37,5 +37,9 @@ int main() {
     tree.PostOrderR();
     printf("InOrder Iterator func\n");
     tree.InOrderI();
+    printf("PreOrder Iterator func\n");
+    tree.PreOrderI();
+    printf("PostOrder Iterator func\n");
+    tree.PostOrderI();
     return 0;
 }

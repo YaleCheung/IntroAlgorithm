@@ -297,7 +297,7 @@ void BinarySearchTree<T>::PreOrderI_(Node<T>* node) {
    std::stack<Node<T>*> stack;    
     while(node || stack.size()) {
         while(node) {
-            this->*func_(node);
+            (this->*func_)(node);
             stack.push(node);
             node = node->left_;
         }
@@ -325,15 +325,15 @@ void BinarySearchTree<T>::PostOrderI_(Node<T>* node) {
         }
         if(! stack.empty()) {
             node = stack.top();
-            // no left node and right node
-            if((node->left_ == NULL && node->right_ == NULL) ||
+            if(node->right_ && pre != node->right_) {
+                node = node->right_;
+            } else if((node->left_ == NULL && node->right_ == NULL) ||
                 (pre != NULL && (pre == node->left_ || pre == node->right_))) {
-                func_(node);
+                (this->*func_)(node);
                 pre = node;
+                stack.pop();
+                node = NULL;
             }
-            if(node->right_)
-                stack.push(node->right_);
-
         }
     }
 }
