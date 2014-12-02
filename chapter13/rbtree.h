@@ -36,7 +36,8 @@ class Node {
 public:
     friend RBTree<T>; 
     Node();
-    Node(const T& val, Node* left, Node* right, Node* parent, Color color);
+    Node(const T& val, Node* left, Node* right, Node* parent, Color color = red);
+    Node(Node* left, Node* right, Node* parent, Color color = red);
     ~Node();
 private:
     T data_;
@@ -52,8 +53,13 @@ Node<T>::Node() :
 }
 
 template<typename T>
-Node<T>::Node(const T& val, Node* left, Node* right, Node* parent, Color color) :
+Node<T>::Node(const T& val, Node<T>* left, Node<T>* right, Node<T>* parent, Color color) :
     data_(val), left_(left), right_(right),  parent_(parent), color_(color){}
+
+template<typename T>
+Node<T>::Node(Node<T>* left, Node<T>* right, Node<T>* parent, Color color) :
+    left_(left), right_(right), parent_(parent), color_(color) {}
+
 template<typename T>
 Node<T>::~Node(){}
 
@@ -67,11 +73,13 @@ public:
     RBTree& Delete(const T& val);
 private:
     Node<T>* root_;
+    Node<T>* nil_;
 };
 
 template<typename T>
 RBTree<T>::RBTree(const T& val) {
-    root_ = new Node<T> (val, NULL, NULL, NULL, black);
+    root_ = new Node<T>(val, NULL, NULL, NULL, black);
+    nil_ = new Node<T>()
 }
 
 template<typename T>

@@ -51,8 +51,9 @@ Node<T>::Node() :
 }
 
 template<typename T>
-Node<T>::Node(const T& val, Node* left, Node* right) :
+Node<T>::Node(const T& val, Node<T>* left, Node<T>* right) :
     data_(val), left_(left), right_(right) {}
+
 template<typename T>
 Node<T>::~Node(){}
 
