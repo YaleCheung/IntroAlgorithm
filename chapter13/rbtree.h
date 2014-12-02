@@ -37,7 +37,8 @@ public:
     friend RBTree<T>; 
     Node();
     Node(const T& val, Node* left, Node* right, Node* parent, Color color = red);
-    Node(Node* left, Node* right, Node* parent, Color color = red);
+    // only  for nil node
+    Node(Node* left, Node* right, Node* parent, Color color = black);
     ~Node();
 private:
     T data_;
@@ -68,22 +69,44 @@ Node<T>::~Node(){}
 template<typename T>
 class RBTree : NoCopyable<T> {
 public:
-    RBTree(const T& val);
+    RBTree();
     RBTree& Insert(const T& val);
     RBTree& Delete(const T& val);
 private:
+    void Fix_(Node<T>*);
     Node<T>* root_;
     Node<T>* nil_;
 };
 
 template<typename T>
-RBTree<T>::RBTree(const T& val) {
-    root_ = new Node<T>(val, NULL, NULL, NULL, black);
-    nil_ = new Node<T>()
+RBTree<T>::RBTree() {
+    nil_ = new Node<T>(NULL, NULL, NULL, black);
+    root_ = NULL;
 }
 
 template<typename T>
 RBTree<T>& RBTree<T>::Insert(const T& val) {
+    Node<T>* p_cur = root_;
+    Node<T>* node_insert = new Node<T>(val, nil_, nil_, NULL, red);
+    Node<T>* p_pre = NULL;
+    while(p_cur) {
+        if(val > p_cur->data_) {
+            p_pre = p_cur;
+            p_cur = p_cur->right_;
+        } else {
+            p_pre = p_cur; 
+            p_cur = p_cur->left_;
+        }
+    }
+    if (p_pre == NULL)  {// root node
+        root_ = node_insert;
+        root_->color_ = black; // the color of root must be black
+    } else {
+        if(val > p_pre->data_) p_pre->right_ = node_insert;
+        else p_pre->left_ = node_insert;
+        node_insert->parent_ = p_pre;
+    }
+    Fix_(node_insert);
 }
 
 template<typename T>
