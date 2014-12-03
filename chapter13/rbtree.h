@@ -3,7 +3,7 @@
  *
  *       Filename:  rbtree.h
  *
- *       Description:  the implementation of red black tree, using double linked method
+ *       Description:  the implementation of RED BLACK tree, using double linked method
  *
  *       Version:  1.0
  *       Created:  12/01/14 13:41:50
@@ -29,16 +29,16 @@
 template<typename T>
 class RBTree;
 
-enum Color {black = 0, red = 1};
+enum Color {BLACK = 0, RED = 1};
 
 template<typename T>
 class Node {
 public:
     friend RBTree<T>; 
     Node();
-    Node(const T& val, Node* left, Node* right, Node* parent, Color color = red);
+    Node(const T& val, Node* left, Node* right, Node* parent, Color color = RED);
     // only  for nil node
-    Node(Node* left, Node* right, Node* parent, Color color = black);
+    Node(Node* left, Node* right, Node* parent, Color color = BLACK);
     ~Node();
 private:
     T data_;
@@ -80,14 +80,14 @@ private:
 
 template<typename T>
 RBTree<T>::RBTree() {
-    nil_ = new Node<T>(NULL, NULL, NULL, black);
+    nil_ = new Node<T>(NULL, NULL, NULL, BLACK);
     root_ = NULL;
 }
 
 template<typename T>
 RBTree<T>& RBTree<T>::Insert(const T& val) {
     Node<T>* p_cur = root_;
-    Node<T>* node_insert = new Node<T>(val, nil_, nil_, NULL, red);
+    Node<T>* node_insert = new Node<T>(val, nil_, nil_, NULL, RED);
     Node<T>* p_pre = NULL;
     while(p_cur) {
         if(val > p_cur->data_) {
@@ -98,18 +98,36 @@ RBTree<T>& RBTree<T>::Insert(const T& val) {
             p_cur = p_cur->left_;
         }
     }
-    if (p_pre == NULL)  {// root node
+    if(p_pre == NULL)  {// root node
         root_ = node_insert;
-        root_->color_ = black; // the color of root must be black
+        root_->color_ = BLACK; // the color of root must be BLACK
+        return *this;
     } else {
         if(val > p_pre->data_) p_pre->right_ = node_insert;
         else p_pre->left_ = node_insert;
         node_insert->parent_ = p_pre;
     }
     Fix_(node_insert);
+    return *this;
+}
+
+template<typename T>
+void RBTree<T>::Fix_(Node<T>* insert_node) {
+    // insert_node is not the root_, because the return is before Fix_(node);
+    // case 1: the node is the root;
+    if(BLACK == insert_node->parent_->color_) // case 2: His parent is Black, then do nothing; because a red node cannot change the bh(tree);
+        return;
+    else if(RED == insert_node->parent_) { 
+        // case 3: the father is RED, but his uncle is Black, which means the father has had a child already. and the parent must possess a Black parent_ gp;
+        if(BLACK == insert_node->parent_->parent_) {
+             
+        }
+
+    }
 }
 
 template<typename T>
 RBTree<T>& RBTree<T>::Delete(const T& val) {
+
 }
 #endif
