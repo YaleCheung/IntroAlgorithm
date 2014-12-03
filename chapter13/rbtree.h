@@ -53,9 +53,11 @@ Node<T>::Node() :
     left_(NULL), right_(NULL), parent_(NULL) { 
 }
 
+// some thing is not right, for the link between child and parent is not constructed
 template<typename T>
 Node<T>::Node(const T& val, Node<T>* left, Node<T>* right, Node<T>* parent, Color color) :
-    data_(val), left_(left), right_(right),  parent_(parent), color_(color){}
+    data_(val), left_(left), right_(right),  parent_(parent), color_(color){
+}
 
 template<typename T>
 Node<T>::Node(Node<T>* left, Node<T>* right, Node<T>* parent, Color color) :
@@ -74,6 +76,10 @@ public:
     RBTree& Delete(const T& val);
 private:
     void Fix_(Node<T>*);
+    Node<T>* Left_(Node<T>* node);
+    Node<T>* Right_(Node<T>* node);
+    Node<T>* Parent_(Node<T>* node);
+    Node<T>* Nil_();
     Node<T>* root_;
     Node<T>* nil_;
 };
@@ -98,7 +104,7 @@ RBTree<T>& RBTree<T>::Insert(const T& val) {
             p_cur = p_cur->left_;
         }
     }
-    if(p_pre == NULL)  {// root node
+    if(NULL == p_pre)  {// root node
         root_ = node_insert;
         root_->color_ = BLACK; // the color of root must be BLACK
         return *this;
@@ -109,6 +115,24 @@ RBTree<T>& RBTree<T>::Insert(const T& val) {
     }
     Fix_(node_insert);
     return *this;
+}
+
+template<typename T>
+Node<T>* RBTree<T>::Left_(Node<T>* node) {
+    if (node != nil_ && node != NULL && node->left_ != nil_ && node->left_ != NULL) 
+        return node->left_;
+    return NULL;
+}
+
+template<typename T>
+Node<T>* RBTree<T>::Right_(Node<T>* node) {
+    if (node != nil_ && node != NULL && node->right_ != nil_ && node->right_ != NULL) 
+        return node->right_;
+    return NULL;
+}
+
+template<typename T>
+Node<T>* RBTree<T>::Parent_(Node<T>* node) {
 }
 
 template<typename T>
