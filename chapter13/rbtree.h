@@ -141,9 +141,9 @@ void RBTree<T>::Fix_(Node<T>* insert_node) {
     // case 1: the node is the root;
     if(BLACK == insert_node->parent_->color_) // case 2: His parent is Black, then do nothing; because a red node cannot change the bh(tree);
         return;
-    else if(RED == insert_node->parent_) { 
+    else if(RED == insert_node->parent_->color_) { 
         // case 3: the father is RED, but his uncle is Black, which means the father has had a child already. and the parent must possess a Black parent_ gp;
-        if(BLACK == insert_node->parent_->parent_) {
+        if(BLACK == insert_node->parent_->parent_->color_) {
              
         }
 

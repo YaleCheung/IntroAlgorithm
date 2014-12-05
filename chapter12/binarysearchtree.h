@@ -117,20 +117,20 @@ BinarySearchTree<T>::BinarySearchTree(const T& val, const BinarySearchTree& l, c
 template<typename T>
 BinarySearchTree<T>& BinarySearchTree<T>::Insert(const T& val) {
     Node<T>* node_insert = new Node<T>(val, NULL, NULL);
-    if(NULL == root_) {
+    if (NULL == root_) {
         root_ = node_insert;
         return *this;
     }
     // find a pos to insert the node_insert
     Node<T>* p = root_;
     Node<T>* pp;
-    while(p != NULL) {
-        if(val > p->data_) {
+    while (p != NULL) {
+        if (val > p->data_) {
             pp = p;
             p = p->right_;
-        } else if(val < p->data_)  {
-                pp = p;
-                p = p->left_;
+        } else {
+            pp = p;
+            p = p->left_;
         }
     }
     // p is a NULL pointer;
