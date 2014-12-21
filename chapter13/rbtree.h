@@ -78,8 +78,10 @@ private:
     void Fix_(Node<T>*);
     Node<T>* Left_(Node<T>* node);
     Node<T>* Right_(Node<T>* node);
-    Node<T>* Parent_(Node<T>* node);
     Node<T>* Nil_();
+    Node<T>* Parent_(Node<T>* node);
+    Node<T>* Uncle_(Node<T>* node);
+    Node<T>* GrandParent_(Node<T>* node);
     Node<T>* root_;
     Node<T>* nil_;
 };
@@ -88,6 +90,52 @@ template<typename T>
 RBTree<T>::RBTree() {
     nil_ = new Node<T>(NULL, NULL, NULL, BLACK);
     root_ = NULL;
+}
+
+template<typename T>
+Node<T>* RBTree<T>::Left_(Node<T>* node) {
+    if (node != nil_)
+        return node->left_;
+    else
+        return NULL;
+}
+
+template<typename T>
+Node<T>* RBTree<T>::Right_(Node<T>* node) {
+    if(node != nil_)
+        return node->right_;
+    else
+        return NULL;
+}
+
+template<typename T>
+Node<T>* RBTree<T>::Parent_(Node<T>* node) {
+    if(node != nil_)
+        return node->parent_;
+    else
+        return NULL;
+}
+
+template<typename T>
+Node<T>* RBTree<T>::GrandParent_(Node<T>* node) {
+    Node<T>* parent = Parent_(node);
+    if (parent != NULL) {
+        return Parent_(node);
+    }
+    return NULL;
+}
+
+template<typename T>
+Node<T>* RBTree<T>::Uncle_(Node<T>* node) {
+    if(node != nil_) {
+        Node<T>* parent = Parent(node);
+        if ((parent != nil_) && (node == Left_(node)))
+            return Right_(node);
+        else if (parent && (node == Right_(node)))
+            return Left_(node);
+    }
+    // node == nil_ or parent == NULL;
+    return NULL;
 }
 
 template<typename T>
@@ -118,40 +166,17 @@ RBTree<T>& RBTree<T>::Insert(const T& val) {
 }
 
 template<typename T>
-Node<T>* RBTree<T>::Left_(Node<T>* node) {
-    if (node != nil_ && node != NULL && node->left_ != nil_ && node->left_ != NULL) 
-        return node->left_;
-    return NULL;
-}
-
-template<typename T>
-Node<T>* RBTree<T>::Right_(Node<T>* node) {
-    if (node != nil_ && node != NULL && node->right_ != nil_ && node->right_ != NULL) 
-        return node->right_;
-    return NULL;
-}
-
-template<typename T>
-Node<T>* RBTree<T>::Parent_(Node<T>* node) {
-}
-
-template<typename T>
 void RBTree<T>::Fix_(Node<T>* insert_node) {
-    // insert_node is not the root_, because the return is before Fix_(node);
-    // case 1: the node is the root;
-    if(BLACK == insert_node->parent_->color_) // case 2: His parent is Black, then do nothing; because a red node cannot change the bh(tree);
-        return;
-    else if(RED == insert_node->parent_->color_) { 
-        // case 3: the father is RED, but his uncle is Black, which means the father has had a child already. and the parent must possess a Black parent_ gp;
-        if(BLACK == insert_node->parent_->parent_->color_) {
-             
-        }
-
+    Node<T>* parent = Parent_(insert_node);
+    while((parent != NULL) && (RED == parent->color_)) { // if the father is RED, there must be a BLACK grand_father;
+        Node<T>* grand_father = GrandFather_(insert_node);
+        Node<T>* uncle = Uncle_(insert_node);
+        if((uncle != NULL) && ())
     }
 }
 
 template<typename T>
 RBTree<T>& RBTree<T>::Delete(const T& val) {
-
+    
 }
 #endif
