@@ -168,10 +168,21 @@ RBTree<T>& RBTree<T>::Insert(const T& val) {
 template<typename T>
 void RBTree<T>::Fix_(Node<T>* insert_node) {
     Node<T>* parent = Parent_(insert_node);
+    if (NULL == parent) {
+        insert_node->color_ = BLACK;
+        return;
+    }
+    if (parent->color_ == BLACK)  // case1 & 2 : the parent is black. which means the current RBTree is right; 
+        return;
     while((parent != NULL) && (RED == parent->color_)) { // if the father is RED, there must be a BLACK grand_father;
         Node<T>* grand_father = GrandFather_(insert_node);
         Node<T>* uncle = Uncle_(insert_node);
-        if((uncle != NULL) && ())
+        if((uncle != NULL) && (RED == uncle->color_)) {
+            parent->color_ = BLACK;
+            uncle->color_ = BLACK;
+            grand_father->color_ = RED;
+            insert_node = grand_father;
+        } else if ()
     }
 }
 
