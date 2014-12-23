@@ -174,15 +174,20 @@ void RBTree<T>::Fix_(Node<T>* insert_node) {
     }
     if (parent->color_ == BLACK)  // case1 & 2 : the parent is black. which means the current RBTree is right; 
         return;
-    while((parent != NULL) && (RED == parent->color_)) { // if the father is RED, there must be a BLACK grand_father;
+    while(((parent = Parent(insert_node)) != NULL) && (RED == parent->color_)) { // if the father is RED, there must be a BLACK grand_father;
         Node<T>* grand_father = GrandFather_(insert_node);
+        assert(BLACK == grand_father->color_);
         Node<T>* uncle = Uncle_(insert_node);
         if((uncle != NULL) && (RED == uncle->color_)) {
             parent->color_ = BLACK;
             uncle->color_ = BLACK;
             grand_father->color_ = RED;
             insert_node = grand_father;
-        } else if ()
+        } else if ((NULL != uncle) && (BLACK == uncle->color_)) {
+            if(insert_node == Left_(parent))
+                 RightRotate(grand_father);
+            
+        }
     }
 }
 
