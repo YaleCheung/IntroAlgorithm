@@ -166,29 +166,54 @@ RBTree<T>& RBTree<T>::Insert(const T& val) {
 }
 
 template<typename T>
-void RBTree<T>::Fix_(Node<T>* insert_node) {
-    Node<T>* parent = Parent_(insert_node);
+void RBTree<T>::Fix_(Node<T>* node) {
+    Node<T>* parent = Parent_(node);
     if (NULL == parent) {
-        insert_node->color_ = BLACK;
+        node->color_ = BLACK;
         return;
     }
     if (parent->color_ == BLACK)  // case1 & 2 : the parent is black. which means the current RBTree is right; 
         return;
-    while(((parent = Parent(insert_node)) != NULL) && (RED == parent->color_)) { // if the father is RED, there must be a BLACK grand_father;
-        Node<T>* grand_father = GrandFather_(insert_node);
+    while(((parent = Parent(node)) != NULL) && (RED == parent->color_)) { // if the father is RED, there must be a BLACK grand_father;
+        Node<T>* grand_father = GrandFather_(node);
         assert(BLACK == grand_father->color_);
-        Node<T>* uncle = Uncle_(insert_node);
-        if((uncle != NULL) && (RED == uncle->color_)) {
-            parent->color_ = BLACK;
-            uncle->color_ = BLACK;
-            grand_father->color_ = RED;
-            insert_node = grand_father;
-        } else if ((NULL != uncle) && (BLACK == uncle->color_)) {
-            if(insert_node == Left_(parent))
-                 RightRotate(grand_father);
+        Node<T>* uncle = Uncle_(node);
+        if(parent == grand_father->left_) {
+            if((uncle != NULL) && (RED == uncle->color_)) { 
+                parent->color_ = BLACK;
+                uncle->color_ = BLACK;
+                grand_father->color_ = RED;
+                node = grand_father;
+            } else if ((NULL != uncle) && (BLACK == uncle->color_)) {
+                if(node == Right_(parent)) {
+                     node = parent;
+                     LeftRotate(node);
+                } else {
+                     parent->color_ = BLACK;
+                     grand_father->color_ = RED;
+                     RightRotate(grand_father);
+                }
+            }
             
+        } else {
+            if(RED == uncle->color_) {
+                parent->color_ = BLACK;
+                uncle->color_ = BLACK;
+                grand_father->color_ = RED;
+                node = grand_father;
+            } else if((NULL != uncle) && (BLACK == uncle->color_)) {
+                if(node == parent->left_) {
+                     node = parent;
+                     RightRotate(node);
+                } else {
+                     parent->color_ = BLACK;
+                     grand_father->color_ = RED;
+                     LeftRotate(grand_father);
+                }
+            }
         }
     }
+    root_->color_ = BLACK;
 }
 
 template<typename T>
