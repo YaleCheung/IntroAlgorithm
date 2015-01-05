@@ -25,4 +25,4 @@ Index
   * Exception is not concluded
   * Cannot be used as Libary yet
   * Code for practice, for understanding the idea. Cannot be used for library
-
+// add 
